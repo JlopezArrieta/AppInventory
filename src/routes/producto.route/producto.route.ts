@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { buscarProductos } from "../../controllers/producto/get.productos/get.productos";
-import { crearProducto } from "../../controllers/producto/post.producto/post.producto";
-import { buscarProducto } from "../../controllers/producto/getId.producto/getId.producto";
-import { modificarProducto } from "../../controllers/producto/put.producto/put.producto";
-import { cambioEstadoProducto } from "../../controllers/producto/disable.producto/disable.producto";
+import { buscarProductos } from "../../controllers/producto/get.productos/get.productos.cller";
+import { buscarProducto } from "../../controllers/producto/getId.producto/getId.producto.cller";
+import { crearProducto } from "../../controllers/producto/post.producto/post.producto.cller";
+import { modificarProducto } from "../../controllers/producto/put.producto/put.producto.cller";
+import { cambioEstadoProducto } from "../../controllers/producto/disable.producto/disable.producto.cller";
+//import { ventaProducto } from "../../controllers/producto/venta.producto/venta.producto.cller";
 
 const productoRoute = Router();
 
@@ -12,6 +13,7 @@ productoRoute.get("/buscar/:id", buscarProducto);
 productoRoute.post("/crear", crearProducto);
 productoRoute.put("/modificar/:id", modificarProducto);
 productoRoute.put("/desactivar/:id", cambioEstadoProducto);
+//productoRoute.put("/venta/:codigo", ventaProducto);
 
 
 export default productoRoute;

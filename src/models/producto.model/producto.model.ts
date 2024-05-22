@@ -16,13 +16,19 @@ export class Producto extends Model {
         type: DataType.INTEGER,
         allowNull: false,
     })
-    cantidad!: number
+    cantidadTotal!: number
 
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
-    precio!: number
+    precioPorKg!: number
+
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false
+    })
+    precioTotal!: number
 
     @Column({
         type: DataType.STRING,

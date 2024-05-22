@@ -1,10 +1,11 @@
 import { RequestHandler } from "express";
 import { Producto } from "../../../models/producto.model/producto.model";
+import { Op } from "sequelize";
 
 interface ProductoReqBody {
   nombre: string;
-  cantidad: number;
-  precio: number;
+  cantidadTotal: number;
+  precioPorKg: number;
   marca: string;
   codigo: string;
   lote: string;
@@ -19,9 +20,9 @@ interface ManejoRespuesta {
 
 export const crearProducto: RequestHandler = async (req, res) => {
   try {
-    const { nombre, cantidad, precio, marca, codigo, lote, fecha }: ProductoReqBody = req.body;
+    const { nombre, cantidadTotal, precioPorKg, marca, codigo, lote, fecha }: ProductoReqBody = req.body;
 
-    if (!nombre || !cantidad || !precio || !marca || !codigo || !lote || !fecha) {
+    if (!nombre || !precioPorKg || !marca || !codigo || !lote || !fecha) {
       return res
         .status(400)
         .json({ message: "Todos los campos son obligatorios" });
@@ -29,7 +30,10 @@ export const crearProducto: RequestHandler = async (req, res) => {
 
     const productoDB: Producto | null = await Producto.findOne({
       where: {
-        lote: lote
+        [Op.or]: [
+          { lote: lote },
+          { codigo: codigo }
+        ]
       }
     });
 
@@ -41,19 +45,22 @@ export const crearProducto: RequestHandler = async (req, res) => {
 
     //Esto garantiza que si haya disponibilidad.
     let disponible: string;
-    if (cantidad > 0) {
+    if (cantidadTotal > 0) {
       disponible = "SI"
     } else {
       disponible = "NO"
     }
 
     //Otra forma.
-    //const disponible = cantidad > 0 ? "SI" : "NO";
+    //const disponibilidad = cantidad > 0 ? "SI" : "NO";
+
+    const valorTotal: number = cantidadTotal * precioPorKg;
 
     const productoCreado: Producto = await Producto.create({
       nombre: nombre,
-      cantidad: cantidad,
-      precio: precio,
+      cantidadTotal: cantidadTotal,
+      precioPorKg: precioPorKg,
+      precioTotal: valorTotal,
       marca: marca,
       codigo: codigo,
       estado: "Activo",
@@ -63,10 +70,13 @@ export const crearProducto: RequestHandler = async (req, res) => {
     });
     return res
       .status(200)
-      .json({ message: "Producto creado con exito", productoCreado } as ManejoRespuesta);
+      .json({ message: "Producto creado con exito", ProductoCreado: productoCreado } as ManejoRespuesta);
   } catch (error) {
     return res
       .status(500)
       .json({ message: "Algo salio mal", error: error } as ManejoRespuesta);
   }
 }
+
+
+

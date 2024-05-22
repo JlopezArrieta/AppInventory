@@ -12,7 +12,7 @@ export const buscarProductos: RequestHandler = async (req, res) => {
         const productos: Producto[] = await Producto.findAll();
         return res
             .status(200)
-            .json({ message: "Producto creado con exito", productos } as ManejoRespuesta);
+            .json({ message: "Lista de Productos", productos } as ManejoRespuesta);
     } catch (error) {
         return res
             .status(500)
