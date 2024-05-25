@@ -1,6 +1,6 @@
-import { Table, Model, Column, DataType, BelongsToMany } from "sequelize-typescript";
-import { Compra } from "../compra.model/compra.model";
-import { CompraProducto } from "../compra.model/compraProducto.model";
+import { Table, Model, Column, DataType } from "sequelize-typescript";
+
+
 
 @Table({
     timestamps: false,
@@ -70,9 +70,10 @@ export class Producto extends Model {
     fecha!: Date
 
     //Relacion muchos a muchos producto con compra.
-    @BelongsToMany(() => Compra, () => CompraProducto)
-    Compras!: Compra[];
+    //@BelongsToMany(() => Compra, () => CompraProducto)
+    //Compras!: Compra[];
 }
+
 
 
 

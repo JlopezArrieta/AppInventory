@@ -3,6 +3,9 @@ import { Sequelize } from "sequelize-typescript";
 import * as dotenv from 'dotenv';
 import { Producto } from "../models/producto.model/producto.model";
 import { FacturaVenta } from "../models/facturaVenta.model/facturaVenta.model";
+import { Compra } from "../models/compra.model/compra.model";
+import { CompraProducto } from "../models/compra.model/compraProducto.model";
+import { FacturaVentaCompra } from "../models/facturaVenta.model/FacturaVentaCompra.model";
 dotenv.config();
 
 const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env;
@@ -17,6 +20,9 @@ export const connection = new Sequelize({
     models: [
         Producto,
         FacturaVenta,
+        Compra,
+        CompraProducto,
+        FacturaVentaCompra,
     ]
 })
 
