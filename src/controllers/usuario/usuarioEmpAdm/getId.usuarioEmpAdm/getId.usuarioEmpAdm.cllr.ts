@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { Usuario } from "../../../models/usuario.model/usuario.model";
+import { Usuario } from "../../../../models/usuario.model/usuario.model";
 
 interface ManejoRespuesta {
   message: string,
