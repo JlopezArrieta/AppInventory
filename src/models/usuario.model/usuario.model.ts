@@ -1,77 +1,62 @@
 import { Table, Model, Column, DataType } from "sequelize-typescript";
 
-
-
 @Table({
     timestamps: false,
-    tableName: "productos"
+    tableName: "usuarios"
 })
 
-export class Producto extends Model {
+export class Usuario extends Model {
     @Column({
         type: DataType.STRING,
         allowNull: false
     })
-    nombre!: string
+    nombres!: string
 
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.STRING,
         allowNull: false,
+        defaultValue: "CC",
     })
-    cantidadTotal!: number
-
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    precioPorKg!: number
+    tipoDocumento!: string
 
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
-    precioTotal!: number
+    numDocumento!: number
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    direccion!: string
+
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+    })
+    telefono!: number
 
     @Column({
         type: DataType.STRING,
         allowNull: false,
+        defaultValue: "No Aplica",
     })
-    marca!: string
+    correo!: string
 
     @Column({
         type: DataType.STRING,
         allowNull: false,
+        defaultValue: "No Aplica",
     })
-    codigo!: string
+    contrasena!: string
 
     @Column({
-        type: DataType.ENUM("Activo", "No Activo"),
+        type: DataType.ENUM("Empleado", "Administrador"),
         allowNull: false,
-        defaultValue: "Activo",
+        defaultValue: "Cliente",
     })
-    estado!: string
-
-    @Column({
-        type: DataType.ENUM("SI", "NO"),
-        allowNull: false,
-    })
-    disponibilidad!: string
-
-    @Column({
-        type: DataType.STRING,
-        allowNull: false,
-    })
-    lote!: string
-
-    @Column({
-        type: DataType.DATE,
-        allowNull: false,
-    })
-    fecha!: Date
-
-    //Relacion muchos a muchos producto con compra.
-    //@BelongsToMany(() => Compra, () => CompraProducto)
-    //Compras!: Compra[];
+    rol!: string
 }
 
 
