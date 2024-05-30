@@ -14,7 +14,7 @@ export const eliminarUsuarioEmpAdm: RequestHandler = async (req, res) => {
         id: id
       }
     });
-    if (!usuario) {
+    if (usuario === 0) {
       return res
         .status(400)
         .json({ message: "El Usuario no existe en la base de datos" } as ManejoRespuesta);

@@ -32,9 +32,13 @@ export const crearUsuarioCliente: RequestHandler = async (req, res) => {
 
     const usuarioCliente: Usuario = await Usuario.create({
       nombres: nombres,
+      tipoDocumento: "CC",
       numDocumento: numDocumento,
       direccion: direccion,
-      telefono: telefono
+      telefono: telefono,
+      correo: "No Aplica",
+      contrasena: "No Aplica",
+      rol: "Cliente"
     });
 
     return res
@@ -46,6 +50,10 @@ export const crearUsuarioCliente: RequestHandler = async (req, res) => {
       .json({ message: "Algo salio mal", error: error } as ManejoRespuesta);
   }
 }
+
+
+
+
 
 
 

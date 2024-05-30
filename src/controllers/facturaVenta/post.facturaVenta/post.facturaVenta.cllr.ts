@@ -2,14 +2,20 @@ import { RequestHandler } from "express";
 import { FacturaVenta } from "../../../models/facturaVenta.model/facturaVenta.model";
 import { Compra } from "../../../models/compra.model/compra.model";
 
+interface ProductoReqBody {
+  usuarioId: number
+}
+
 interface ManejoRespuesta {
   message: string;
   facturaDeVenta: FacturaVenta | null;
   facturaDeCompras: FacturaVenta | null;
   error?: any;
 }
+
 export const crearFacturaVenta: RequestHandler = async (req, res) => {
   try {
+    const { usuarioId }: ProductoReqBody = req.body;
     const compras: Compra[] = await Compra.findAll();
     if (compras.length === 0) {
       return res.status(400).json({ message: "Noy compras seleccionadas" } as ManejoRespuesta);
@@ -26,7 +32,8 @@ export const crearFacturaVenta: RequestHandler = async (req, res) => {
     const crearFactura: FacturaVenta = await FacturaVenta.create({
       fechaDeCompra: fechaActual,
       estadoDeFactura: "Activa",
-      valorApagar: valorTotal
+      valorApagar: valorTotal,
+      usuarioId: usuarioId
     });
 
     for (const compra of compras) {

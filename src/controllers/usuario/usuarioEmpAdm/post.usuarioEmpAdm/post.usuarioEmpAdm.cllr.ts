@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { Usuario } from "../../../../models/usuario.model/usuario.model";
+import { hashPassword } from "../../../../helper/handle.bcrypt";
 
 interface ManejoRespuesta {
   message: string,
@@ -37,13 +38,15 @@ export const crearUsuarioEmpAdm: RequestHandler = async (req, res) => {
       rolUsuario = "Administrador";
     }
 
+    const contrasenaIncriptada: string = await hashPassword(contrasena);
+
     const crearUsuario: Usuario = await Usuario.create({
       nombres: nombres,
       numDocumento: numDocumento,
       direccion: direccion,
       telefono: telefono,
       correo: correo,
-      contrasena: contrasena,
+      contrasena: contrasenaIncriptada,
       rol: rolUsuario
     });
     return res

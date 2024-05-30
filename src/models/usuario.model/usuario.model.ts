@@ -1,4 +1,5 @@
-import { Table, Model, Column, DataType } from "sequelize-typescript";
+import { Table, Model, Column, DataType, HasMany } from "sequelize-typescript";
+import { FacturaVenta } from "../facturaVenta.model/facturaVenta.model";
 
 @Table({
     timestamps: false,
@@ -20,7 +21,7 @@ export class Usuario extends Model {
     tipoDocumento!: string
 
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.BIGINT,
         allowNull: false
     })
     numDocumento!: number
@@ -32,7 +33,7 @@ export class Usuario extends Model {
     direccion!: string
 
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.BIGINT,
         allowNull: false,
     })
     telefono!: number
@@ -52,11 +53,15 @@ export class Usuario extends Model {
     contrasena!: string
 
     @Column({
-        type: DataType.ENUM("Empleado", "Administrador"),
+        type: DataType.ENUM("Empleado", "Administrador", "Cliente"),
         allowNull: false,
         defaultValue: "Cliente",
     })
     rol!: string
+
+    // Relación uno a muchos usuario con FacturaVenta
+    @HasMany(() => FacturaVenta)
+    facturas!: FacturaVenta[];
 }
 
 
