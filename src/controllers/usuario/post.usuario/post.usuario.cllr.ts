@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
-import { Usuario } from "../../../../models/usuario.model/usuario.model";
-import { hashPassword } from "../../../../helper/handle.bcrypt";
+import { Usuario } from "../../../models/usuario.model/usuario.model";
+import { hashPassword } from "../../../helper/handle.bcrypt";
 
 interface ManejoRespuesta {
   message: string,
@@ -8,7 +8,7 @@ interface ManejoRespuesta {
   error: any,
 };
 
-export const crearUsuarioEmpAdm: RequestHandler = async (req, res) => {
+export const crearUsuario: RequestHandler = async (req, res) => {
   try {
     const { nombres, numDocumento, direccion, telefono, correo, contrasena, rol } = req.body;
 
@@ -31,12 +31,12 @@ export const crearUsuarioEmpAdm: RequestHandler = async (req, res) => {
         .json({ message: "Este Usuario ya existe en la base de datos" } as ManejoRespuesta);
     }
 
-    let rolUsuario: string = '';
-    if (rol === "Empleado") {
-      rolUsuario = "Empleado";
-    } else {
-      rolUsuario = "Administrador";
-    }
+    // let rolUsuario: string = '';
+    // if (rol === "Empleado") {
+    //   rolUsuario = "Empleado";
+    // } else {
+    //   rolUsuario = "Administrador";
+    // }
 
     const contrasenaIncriptada: string = await hashPassword(contrasena);
 
@@ -47,11 +47,12 @@ export const crearUsuarioEmpAdm: RequestHandler = async (req, res) => {
       telefono: telefono,
       correo: correo,
       contrasena: contrasenaIncriptada,
-      rol: rolUsuario
+      rol: rol
     });
     return res
+
       .status(200)
-      .json({ message: `Usuario ${rolUsuario} creado con exito`, crearUsuario } as ManejoRespuesta);
+      .json({ message: `Usuario ${rol} creado con exito`, crearUsuario } as ManejoRespuesta);
   } catch (error) {
     return res
       .status(500)

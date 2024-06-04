@@ -1,10 +1,10 @@
 import { RequestHandler } from "express";
 import { Usuario } from "../../models/usuario.model/usuario.model";
 import { comparePassword } from "../../helper/handle.bcrypt";
+import { generarToken } from "../../helper/jwt";
 
 interface ManejoRespuesta {//
   message: string,
-  usuario: Usuario | null,
   error?: any
 }
 
@@ -23,23 +23,29 @@ export const accesoUsuario: RequestHandler = async (req, res) => {
         .json({ message: "Todos los campos son obligatorios" } as ManejoRespuesta);
     }
 
-    const usuario: Usuario | null = await Usuario.findOne({
+    const usuarioDB: Usuario | null = await Usuario.findOne({
       where: {
         correo: correo
       }
     });
 
-    if (!usuario) {
+    if (!usuarioDB) {
       return res
         .status(200)
         .json({ message: "Usuario no encontrado, debe registrarse" } as ManejoRespuesta);
     }
 
-    const chequeoContrasena: Object = await comparePassword(contrasena, usuario.contrasena);
+    const chequeoContrasena: Object = await comparePassword(contrasena, usuarioDB.contrasena);
+
     if (chequeoContrasena) {
+      const tokenGenerado = await generarToken({
+        id: usuarioDB.id,
+        nombres: usuarioDB.nombres,
+        rol: usuarioDB.rol
+      });
       return res
         .status(200)
-        .json({ message: "Usuario accedio correctamente", usuario: usuario } as ManejoRespuesta);
+        .json({ message: "Usuario accedio correctamente", usuarioDB, tokenGenerado } as ManejoRespuesta);
     } else {
       return res
         .status(200)
@@ -51,6 +57,7 @@ export const accesoUsuario: RequestHandler = async (req, res) => {
       .json({ message: "Algo salio mal", error: error } as ManejoRespuesta);
   }
 }
+
 
 
 

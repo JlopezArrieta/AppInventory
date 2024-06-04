@@ -1,12 +1,12 @@
 import { RequestHandler } from "express";
-import { Usuario } from "../../../../models/usuario.model/usuario.model";
+import { Usuario } from "../../../models/usuario.model/usuario.model";
 
 interface ManejoRespuesta {
   message: string,
   error: string,
 }
 
-export const eliminarUsuarioEmpAdm: RequestHandler = async (req, res) => {
+export const eliminarUsuario: RequestHandler = async (req, res) => {
   try {
     const id: string = req.params.id;
     const usuario: Object = await Usuario.destroy({

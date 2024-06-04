@@ -28,26 +28,28 @@ export class Usuario extends Model {
 
     @Column({
         type: DataType.STRING,
-        allowNull: false
+        allowNull: true,
+        defaultValue: "No Aplica",
     })
     direccion!: string
 
     @Column({
         type: DataType.BIGINT,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "No Aplica",
     })
     telefono!: number
 
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
         defaultValue: "No Aplica",
     })
     correo!: string
 
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
         defaultValue: "No Aplica",
     })
     contrasena!: string

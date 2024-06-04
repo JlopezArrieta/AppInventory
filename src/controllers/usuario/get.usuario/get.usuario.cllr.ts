@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { Usuario } from "../../../../models/usuario.model/usuario.model";
+import { Usuario } from "../../../models/usuario.model/usuario.model";
 
 interface ManejoRespuesta {
   message: string,
@@ -7,7 +7,7 @@ interface ManejoRespuesta {
   error: string,
 }
 
-export const buscarUsuariosEmpAdm: RequestHandler = async (req, res) => {
+export const buscarUsuarios: RequestHandler = async (req, res) => {
   try {
     const usuariosDB: Usuario[] = await Usuario.findAll();
     if (!usuariosDB) {

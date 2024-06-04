@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { Usuario } from "../../../../models/usuario.model/usuario.model";
+import { Usuario } from "../../../models/usuario.model/usuario.model";
 
 interface ManejoRespuesta {
   message: string,
@@ -7,7 +7,7 @@ interface ManejoRespuesta {
   error: string,
 }
 
-export const modificarUsuarioEmpAdm: RequestHandler = async (req, res) => {
+export const modificarUsuario: RequestHandler = async (req, res) => {
   try {
     const id: string | number = req.params.id;
     const { nombres, numDocumento, direccion, telefono, correo, contrasena, rol } = req.body;
