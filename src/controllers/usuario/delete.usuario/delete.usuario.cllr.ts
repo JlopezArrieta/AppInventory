@@ -17,11 +17,11 @@ export const eliminarUsuario: RequestHandler = async (req, res) => {
     if (usuario === 0) {
       return res
         .status(400)
-        .json({ message: "El Usuario no existe en la base de datos" } as ManejoRespuesta);
+        .json({ message: `El Usuario con el Id: ${id} No existe ne la base de datos` } as ManejoRespuesta);
     }
     return res
       .status(200)
-      .json({ message: "Usuario Eliminado con Exito" } as ManejoRespuesta);
+      .json({ message: `El Usuario con el Id: ${id} fue eliminado con exito` } as ManejoRespuesta);
   } catch (error) {
     return res
       .status(500)

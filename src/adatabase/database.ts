@@ -1,13 +1,16 @@
 import { Sequelize } from "sequelize-typescript";
 
 import * as dotenv from 'dotenv';
-import { Producto } from "../models/producto.model/producto.model";
-import { FacturaVenta } from "../models/facturaVenta.model/facturaVenta.model";
-import { Compra } from "../models/compra.model/compra.model";
-import { CompraProducto } from "../models/compra.model/compraProducto.model";
-import { FacturaVentaCompra } from "../models/facturaVenta.model/FacturaVentaCompra.model";
-import { Usuario } from "../models/usuario.model/usuario.model";
 dotenv.config();
+
+import { Usuario } from "../models/usuario.model/usuario.model";
+import { Producto } from "../models/producto.model/producto.model";
+import { Carrito } from "../models/carrito.model/carrito.model";
+//import { Compra } from "../models/compra.model/compra.model";
+//import { CompraProducto } from "../models/compra.model/compraProducto.model";
+//import { FacturaVentaCompra } from "../models/factura.model/FacturaCompra.model";
+//import { Factura } from "../models/factura.model/factura.model";
+
 
 const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env;
 
@@ -19,12 +22,13 @@ export const connection = new Sequelize({
     database: DB_DATABASE,
     logging: false,
     models: [
-        Producto,
-        FacturaVenta,
-        Compra,
-        CompraProducto,
-        FacturaVentaCompra,
         Usuario,
+        Producto,
+        Carrito,
+        //Factura,
+        //Compra,
+        //CompraProducto,
+        //FacturaVentaCompra,
     ]
 })
 
@@ -38,7 +42,7 @@ async function connectionDB() {
 }
 
 export default connectionDB;
-//
+
 
 
 

@@ -7,14 +7,24 @@ interface ManejoRespuesta {
   error: string,
 }
 
+interface ProductoReqBody {
+  nombresApellidos: string;
+  numDocumento: number;
+  direccion: string;
+  telefono: string;
+  correo: string;
+  contrasena: string;
+  rol: string;
+}
+
 export const modificarUsuario: RequestHandler = async (req, res) => {
   try {
-    const id: string | number = req.params.id;
-    const { nombres, numDocumento, direccion, telefono, correo, contrasena, rol } = req.body;
+    const id: string = req.params.id;
+    const { nombresApellidos, numDocumento, direccion, telefono, correo, contrasena, rol }: ProductoReqBody = req.body;
 
     const [usuarioModificar] = await Usuario.update(
       {
-        nombres: nombres,
+        nombresApellidos: nombresApellidos,
         numDocumento: numDocumento,
         direccion: direccion,
         telefono: telefono,

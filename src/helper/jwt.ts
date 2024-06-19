@@ -4,7 +4,7 @@ dotenv.config();
 
 interface interUsuario {
   id: number;
-  nombres: string;
+  nombresApellidos: string;
   rol: string;
 }
 
@@ -12,7 +12,7 @@ const palabraSecreta: any = process.env.JWT_SECRET_KEY;
 
 export const generarToken = (usuario: interUsuario) => {
   try {
-    return jwt.sign(usuario, palabraSecreta, { expiresIn: "2h" });
+    return jwt.sign(usuario, palabraSecreta, { expiresIn: "200h" });
   } catch (error: any) {
     return error.message;
   }

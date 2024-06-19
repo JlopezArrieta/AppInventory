@@ -8,8 +8,8 @@ interface ManejoRespuesta {
 
 export const adminMiddlewares: RequestHandler = async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1];
-    //const token = req.headers.tk;
+    const token: any = req.headers.token;
+    //const token = req.body.token;
     if (!token) {
       return res
         .status(400)
@@ -23,12 +23,12 @@ export const adminMiddlewares: RequestHandler = async (req, res, next) => {
         .json({ message: "Credenciales Incorrectas" } as ManejoRespuesta);
     }
 
-    if (accesoToken.rol !== "Administrador") {
+    if (accesoToken.rol === "Admin") {
       next();
     } else {
       return res
         .status(400)
-        .json({ message: "No tienes persmiso de administrador" } as ManejoRespuesta);
+        .json({ message: "No tienes persmiso de Admin" } as ManejoRespuesta);
     }
   } catch (error) {
     return res

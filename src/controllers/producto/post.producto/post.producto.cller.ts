@@ -1,15 +1,15 @@
 import { RequestHandler } from "express";
 import { Producto } from "../../../models/producto.model/producto.model";
 import { Op } from "sequelize";
+import moment from "moment-timezone";
 
 interface ProductoReqBody {
   nombre: string;
-  cantidadTotal: number;
-  precioPorKg: number;
   marca: string;
+  cantidadTotal: number;
+  precioUnitario: number;
   codigo: string;
-  lote: string;
-  fecha: Date;
+  lote: string
 }
 
 interface ManejoRespuesta {
@@ -20,12 +20,12 @@ interface ManejoRespuesta {
 
 export const crearProducto: RequestHandler = async (req, res) => {
   try {
-    const { nombre, cantidadTotal, precioPorKg, marca, codigo, lote, fecha }: ProductoReqBody = req.body;
+    const { nombre, marca, cantidadTotal, precioUnitario, codigo, lote }: ProductoReqBody = req.body;
 
-    if (!nombre || !precioPorKg || !marca || !codigo || !lote || !fecha) {
+    if (!nombre || !marca || !cantidadTotal || !precioUnitario || !codigo || !lote) {
       return res
         .status(400)
-        .json({ message: "Todos los campos son obligatorios" });
+        .json({ message: "Todos los campos son obligatorios" } as ManejoRespuesta);
     }
 
     const productoDB: Producto | null = await Producto.findOne({
@@ -54,19 +54,20 @@ export const crearProducto: RequestHandler = async (req, res) => {
     //Otra forma.
     //const disponibilidad = cantidad > 0 ? "SI" : "NO";
 
-    const valorTotal: number = cantidadTotal * precioPorKg;
+    const valorTotal: number = Math.round(cantidadTotal * precioUnitario * 100) / 100;
+
+    const fecha = moment.tz("America/Bogota").format("YYYY-MM-DD hh:mm:ss A");
 
     const productoCreado: Producto = await Producto.create({
       nombre: nombre,
-      cantidadTotal: cantidadTotal,
-      precioPorKg: precioPorKg,
-      precioTotal: valorTotal,
       marca: marca,
+      cantidadTotal: cantidadTotal,
+      precioUnitario: precioUnitario,
+      precioTotal: valorTotal,
       codigo: codigo,
-      estado: "Activo",
       disponibilidad: disponible,
       lote: lote,
-      fecha: fecha
+      fechaRegistro: fecha
     });
     return res
       .status(200)

@@ -8,7 +8,7 @@ interface ManejoRespuesta {
 
 export const emplMiddlewares: RequestHandler = async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1];
+    const token: any = req.headers.token;
     if (!token) {
       return res
         .status(400)
@@ -22,7 +22,7 @@ export const emplMiddlewares: RequestHandler = async (req, res, next) => {
         .json({ message: "Credenciales Incorrectas" } as ManejoRespuesta);
     }
 
-    if (accesoToken.rol === "Empleado" || accesoToken.rol === "Administrador") {
+    if (accesoToken.rol === "Empleado" || accesoToken.rol === "Admin") {
       next();
     } else {
       return res

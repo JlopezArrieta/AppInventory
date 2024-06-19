@@ -9,41 +9,38 @@ interface ManejoRespuesta {
 
 interface ProductoReqBody {
   nombre: string;
-  cantidad: number;
-  precioPorKg: number;
-  precioTotal: number;
   marca: string;
+  cantidadTotal: number;
+  precioUnitario: number;
   codigo: string;
   lote: string;
-  fecha: Date;
 }
 
 export const modificarProducto: RequestHandler = async (req, res) => {
   try {
     const id: string = req.params.id;
-    const { nombre, cantidad, precioPorKg, marca, codigo, lote, fecha }: ProductoReqBody = req.body;
+    const { nombre, marca, cantidadTotal, precioUnitario, codigo, lote }: ProductoReqBody = req.body;
 
-    //Esto garantiza que si haya disponibilidad.
+    //Esto garantiza que si hay disponibilidad.
     let disponible: string;
-    if (cantidad > 0) {
+    if (cantidadTotal > 0) {
       disponible = "SI"
     } else {
       disponible = "NO"
     }
 
-    const valorTotal: number = cantidad * precioPorKg;
+    let valorTotal: number = cantidadTotal * precioUnitario;
 
     const [numeroFilasModificadas] = await Producto.update(
       {
         nombre: nombre,
-        cantidadTotal: cantidad,
-        precioPorKg: precioPorKg,
-        precioTotal: valorTotal,
         marca: marca,
-        codigo: codigo,
+        cantidadTotal: cantidadTotal,
+        precioPorKg: precioUnitario,
+        precioTotal: valorTotal,
         disponibilidad: disponible,
+        codigo: codigo,
         lote: lote,
-        fecha: fecha
       }, {
       where: {
         id: id
@@ -52,16 +49,14 @@ export const modificarProducto: RequestHandler = async (req, res) => {
     );
 
     if (numeroFilasModificadas > 0) {
-      console.log(numeroFilasModificadas);
       const productoModificado: Producto | null = await Producto.findByPk(id);
       return res
         .status(200)
-        .json({ message: "El Producto con el Id fue Modificado con exito", productoModificado } as ManejoRespuesta);
+        .json({ message: `El Producto con el Id: ${id} fue Modificado con exito`, productoModificado } as ManejoRespuesta);
     } else {
-      console.log(numeroFilasModificadas);
       return res
         .status(400)
-        .json({ message: "El Producto con el Id no fue Modificado o no existe en la base de datos" } as ManejoRespuesta);
+        .json({ message: `El Producto con el Id: ${id} no fue Modificado, verifique el Id` } as ManejoRespuesta);
     }
   } catch (error) {
     return res

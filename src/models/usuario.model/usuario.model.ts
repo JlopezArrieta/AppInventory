@@ -1,5 +1,5 @@
 import { Table, Model, Column, DataType, HasMany } from "sequelize-typescript";
-import { FacturaVenta } from "../facturaVenta.model/facturaVenta.model";
+import { Carrito } from "../carrito.model/carrito.model";
 
 @Table({
     timestamps: false,
@@ -11,7 +11,7 @@ export class Usuario extends Model {
         type: DataType.STRING,
         allowNull: false
     })
-    nombres!: string
+    nombresApellidos!: string
 
     @Column({
         type: DataType.STRING,
@@ -22,48 +22,55 @@ export class Usuario extends Model {
 
     @Column({
         type: DataType.BIGINT,
-        allowNull: false
+        allowNull: false,
+        defaultValue: 0,
     })
     numDocumento!: number
 
     @Column({
         type: DataType.STRING,
-        allowNull: true,
+        allowNull: false,
         defaultValue: "No Aplica",
     })
     direccion!: string
 
     @Column({
         type: DataType.BIGINT,
-        allowNull: true,
-        defaultValue: "No Aplica",
+        allowNull: false,
+        defaultValue: 0,
     })
     telefono!: number
 
     @Column({
         type: DataType.STRING,
-        allowNull: true,
-        defaultValue: "No Aplica",
+        allowNull: false,
+        defaultValue: "",
     })
     correo!: string
 
     @Column({
         type: DataType.STRING,
-        allowNull: true,
-        defaultValue: "No Aplica",
+        allowNull: false,
+        defaultValue: "",
     })
     contrasena!: string
 
     @Column({
-        type: DataType.ENUM("Empleado", "Administrador", "Cliente"),
+        type: DataType.ENUM("Empleado", "Admin", "Cliente"),
         allowNull: false,
         defaultValue: "Cliente",
     })
     rol!: string
 
-    // Relación uno a muchos usuario con FacturaVenta
-    @HasMany(() => FacturaVenta)
-    facturas!: FacturaVenta[];
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+    })
+    fechaRegistro!: String
+
+    //Relación uno a muchos, Usuario con Carrito.
+    @HasMany(() => Carrito)
+    carritos!: Carrito[];
 }
 
 

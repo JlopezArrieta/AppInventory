@@ -3,7 +3,7 @@ import { Usuario } from "../../models/usuario.model/usuario.model";
 import { comparePassword } from "../../helper/handle.bcrypt";
 import { generarToken } from "../../helper/jwt";
 
-interface ManejoRespuesta {//
+interface ManejoRespuesta {
   message: string,
   error?: any
 }
@@ -36,11 +36,10 @@ export const accesoUsuario: RequestHandler = async (req, res) => {
     }
 
     const chequeoContrasena: Object = await comparePassword(contrasena, usuarioDB.contrasena);
-
     if (chequeoContrasena) {
       const tokenGenerado = await generarToken({
         id: usuarioDB.id,
-        nombres: usuarioDB.nombres,
+        nombresApellidos: usuarioDB.nombresApellidos,
         rol: usuarioDB.rol
       });
       return res
@@ -48,7 +47,7 @@ export const accesoUsuario: RequestHandler = async (req, res) => {
         .json({ message: "Usuario accedio correctamente", usuarioDB, tokenGenerado } as ManejoRespuesta);
     } else {
       return res
-        .status(200)
+        .status(400)
         .json({ message: "Contrasena Incorrecta" } as ManejoRespuesta);
     }
   } catch (error) {
