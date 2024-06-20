@@ -16,7 +16,7 @@ export const eliminarProducto: RequestHandler = async (req, res) => {
       }
     });
 
-    if (!productoDB) {
+    if (productoDB === 0) {
       return res
         .status(400)
         .json({ message: `El Producto con el Id: ${id} No existe ne la base de datos` } as ManejoRespuesta);

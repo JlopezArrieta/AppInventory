@@ -16,7 +16,7 @@ interface ProductoReqBody {
   lote: string;
 }
 
-export const modificarProducto: RequestHandler = async (req, res) => {
+export const actualizarProducto: RequestHandler = async (req, res) => {
   try {
     const id: string = req.params.id;
     const { nombre, marca, cantidadTotal, precioUnitario, codigo, lote }: ProductoReqBody = req.body;

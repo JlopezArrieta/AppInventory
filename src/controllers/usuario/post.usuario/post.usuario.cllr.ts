@@ -63,7 +63,7 @@ export const crearUsuario: RequestHandler = async (req, res) => {
       contrasenaIncriptada = await hashPassword(contrasena);
     }
 
-    let rolAsignado: string = "Admin";
+    let rolAsignado: string = "Cliente";
     const token: any = req.headers.token;
 
     if (token) {

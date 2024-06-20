@@ -10,16 +10,29 @@ interface ManejoRespuesta {
 
 export const buscarCarrito: RequestHandler = async (req, res) => {
   try {
-    const usuarioid: number = req.body.usuarioId;
+    const usuarioid: string = req.params.usuarioId;
+
     const carritos: Carrito[] = await Carrito.findAll({
       where: {
         usuarioId: usuarioid
       },
-      include: [Producto]
+      include: [{
+        model: Producto,
+        attributes: {
+          exclude: ["id", "marca", "cantidadTotal", "precioTotal", "codigo", "disponibilidad", "lote", "fechaRegistro"]
+        }
+      }]
+
     });
-    return res
-      .status(200)
-      .json({ message: "Lista de Carritos", carritos } as ManejoRespuesta);
+    if (carritos.length !== 0) {
+      return res
+        .status(200)
+        .json({ message: "Lista de Carritos", carritos } as ManejoRespuesta);
+    } else {
+      return res
+        .status(400)
+        .json({ message: `El Usuario con el Id: ${usuarioid} no tiene carrito creado` } as ManejoRespuesta);
+    }
   } catch (error) {
     return res
       .status(500)

@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import { Carrito } from "../../../models/carrito.model/carrito.model";
 import { Producto } from "../../../models/producto.model/producto.model";
+import { Usuario } from "../../../models/usuario.model/usuario.model";
 
 interface CarritoReqBody {
   usuarioId: number,
@@ -31,6 +32,13 @@ export const agregarProductoCarrito: RequestHandler = async (req, res) => {
         .json({ message: "El Producto no existe en la base de datos" } as ManejoRespuesta);
     }
 
+    const usuario: Usuario | null = await Usuario.findByPk(usuarioId);
+    if (!usuario) {
+      return res
+        .status(400)
+        .json({ message: "El Usuario no existe en la base de datos" } as ManejoRespuesta);
+    }
+
     let carrito: Carrito | null = await Carrito.findOne({
       where: {
         usuarioId: usuarioId,
@@ -40,10 +48,10 @@ export const agregarProductoCarrito: RequestHandler = async (req, res) => {
 
     if (carrito) {
       carrito.cantidad = carrito.cantidad + cantidad;
-      carrito.subTotal = carrito.cantidad * producto.precioUnitario;
+      carrito.subTotal = Math.round(carrito.cantidad * producto.precioUnitario * 100) / 100;
       await carrito.save();
     } else {
-      let valorTotal: number = cantidad * producto?.precioUnitario
+      let valorTotal: number = Math.round(cantidad * producto?.precioUnitario * 100) / 100;
 
       carrito = await Carrito.create({
         usuarioId: usuarioId,
@@ -53,8 +61,8 @@ export const agregarProductoCarrito: RequestHandler = async (req, res) => {
       });
     }
 
-    producto.cantidadTotal = producto.cantidadTotal - cantidad;
-    await producto.save();
+    // producto.cantidadTotal = producto.cantidadTotal - cantidad;
+    // await producto.save();
 
     return res
       .status(200)

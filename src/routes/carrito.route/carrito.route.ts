@@ -12,8 +12,8 @@ const carritoRoute = Router();
 carritoRoute.get("/buscar/:usuarioId", buscarCarrito);//Se busca todos los productos del Carrito
 carritoRoute.post("/agregar", agregarProductoCarrito);
 carritoRoute.put("/actualizar", actualizarProductoCarrito);
-carritoRoute.delete("/eliminar/:usuarioId/:productoId", eliminarProductoDelCarrito);//Elimina un producto del Carrito.
-carritoRoute.delete("/eliminar/:usuarioId", eliminarCarrito);//Elimina todos los productos del Carrito.
+carritoRoute.delete("/eliminarpro/:usuarioId/:productoId", eliminarProductoDelCarrito);//Elimina un producto del Carrito.
+carritoRoute.delete("/eliminarcar/:usuarioId", eliminarCarrito);//Elimina todos los productos del Carrito.
 
 
 export default carritoRoute;

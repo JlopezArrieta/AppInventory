@@ -13,14 +13,13 @@ interface ProductoReqBody {
   direccion: string;
   telefono: string;
   correo: string;
-  contrasena: string;
   rol: string;
 }
 
-export const modificarUsuario: RequestHandler = async (req, res) => {
+export const actualizarUsuario: RequestHandler = async (req, res) => {
   try {
     const id: string = req.params.id;
-    const { nombresApellidos, numDocumento, direccion, telefono, correo, contrasena, rol }: ProductoReqBody = req.body;
+    const { nombresApellidos, numDocumento, direccion, telefono, correo, rol }: ProductoReqBody = req.body;
 
     const [usuarioModificar] = await Usuario.update(
       {
@@ -29,7 +28,6 @@ export const modificarUsuario: RequestHandler = async (req, res) => {
         direccion: direccion,
         telefono: telefono,
         correo: correo,
-        contrasena: contrasena,
         rol: rol
       },
       {
