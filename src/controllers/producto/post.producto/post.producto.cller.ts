@@ -6,7 +6,6 @@ import moment from "moment-timezone";
 interface ProductoReqBody {
   nombre: string;
   marca: string;
-  cantidadTotal: number;
   precioUnitario: number;
   codigo: string;
   lote: string
@@ -20,9 +19,9 @@ interface ManejoRespuesta {
 
 export const crearProducto: RequestHandler = async (req, res) => {
   try {
-    const { nombre, marca, cantidadTotal, precioUnitario, codigo, lote }: ProductoReqBody = req.body;
+    const { nombre, marca, precioUnitario, codigo, lote }: ProductoReqBody = req.body;
 
-    if (!nombre || !marca || !cantidadTotal || !precioUnitario || !codigo || !lote) {
+    if (!nombre || !marca || !precioUnitario || !codigo || !lote) {
       return res
         .status(400)
         .json({ message: "Todos los campos son obligatorios" } as ManejoRespuesta);
@@ -44,28 +43,24 @@ export const crearProducto: RequestHandler = async (req, res) => {
     }
 
     //Esto garantiza que si haya disponibilidad.
-    let disponible: string;
-    if (cantidadTotal > 0) {
-      disponible = "SI"
-    } else {
-      disponible = "NO"
-    }
+    // let disponible: string;
+    // if (cantidadTotal > 0) {
+    //   disponible = "SI"
+    // } else {
+    //   disponible = "NO"
+    // }
 
     //Otra forma.
     //const disponibilidad = cantidad > 0 ? "SI" : "NO";
-
-    const valorTotal: number = Math.round(cantidadTotal * precioUnitario * 100) / 100;
 
     const fecha = moment.tz("America/Bogota").format("YYYY-MM-DD hh:mm:ss A");
 
     const productoCreado: Producto = await Producto.create({
       nombre: nombre,
       marca: marca,
-      cantidadTotal: cantidadTotal,
       precioUnitario: precioUnitario,
-      precioTotal: valorTotal,
       codigo: codigo,
-      disponibilidad: disponible,
+      disponibilidad: "Si",
       lote: lote,
       fechaRegistro: fecha
     });

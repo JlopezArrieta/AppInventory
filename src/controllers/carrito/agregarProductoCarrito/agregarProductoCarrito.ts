@@ -6,7 +6,8 @@ import { Usuario } from "../../../models/usuario.model/usuario.model";
 interface CarritoReqBody {
   usuarioId: number,
   productoId: number,
-  cantidad: number
+  cantidad: number,
+  metodoPago: string
 }
 
 interface ManejoRespuesta {
@@ -51,18 +52,14 @@ export const agregarProductoCarrito: RequestHandler = async (req, res) => {
       carrito.subTotal = Math.round(carrito.cantidad * producto.precioUnitario * 100) / 100;
       await carrito.save();
     } else {
-      let valorTotal: number = Math.round(cantidad * producto?.precioUnitario * 100) / 100;
-
+      let total: number = Math.round(cantidad * producto?.precioUnitario * 100) / 100;
       carrito = await Carrito.create({
         usuarioId: usuarioId,
         productoId: productoId,
         cantidad: cantidad,
-        subTotal: valorTotal,
+        subTotal: total,
       });
     }
-
-    // producto.cantidadTotal = producto.cantidadTotal - cantidad;
-    // await producto.save();
 
     return res
       .status(200)

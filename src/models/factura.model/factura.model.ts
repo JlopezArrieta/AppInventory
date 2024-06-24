@@ -1,59 +1,54 @@
-// import { Table, Model, Column, DataType, ForeignKey, BelongsTo, BelongsToMany } from "sequelize-typescript";
-// import { Usuario } from "../usuario.model/usuario.model";
+import { Table, Model, Column, DataType, ForeignKey, BelongsTo, HasMany } from "sequelize-typescript";
+import { Compra } from "../compra.model/compra.model";
+import { Usuario } from "../usuario.model/usuario.model";
+import { Detalle } from "../detalle.model/detalle.model";
 
-// @Table({
-//   timestamps: false,
-//   tableName: "facturas"
-// })
+@Table({
+  timestamps: false,
+  tableName: "facturas"
+})
 
-// export class Factura extends Model {
-//   @Column({
-//     type: DataType.STRING,
-//     allowNull: false
-//   })
-//   nombreCajero!: string
+export class Factura extends Model {
+  @ForeignKey(() => Usuario)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false
+  })
+  usuarioId!: number;
 
-//   @Column({
-//     type: DataType.DATE,
-//     allowNull: false
-//   })
-//   fechaDeCompra!: Date
+  @ForeignKey(() => Compra)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false
+  })
+  compraId!: number;
 
-//   @Column({
-//     type: DataType.ENUM("Pagada", "Pendiente", "Cancelada"),
-//     allowNull: false,
-//     defaultValue: "Pagada",
-//   })
-//   estadoDeFactura!: string
+  @Column({
+    type: DataType.STRING,
+    allowNull: false
+  })
+  fechaEmision!: string;
 
-//   @Column({
-//     type: DataType.INTEGER,
-//     allowNull: false
-//   })
-//   valorApagar!: number
+  @Column({
+    type: DataType.ENUM("Activa", "Cancelada"),
+    allowNull: false,
+    defaultValue: "Activa",
+  })
+  estado!: string;
 
-//   @Column({
-//     type: DataType.ENUM("Efectivo", "Bonos", "Tarjeta"),
-//     allowNull: false,
-//     defaultValue: "Efectivo",
-//   })
-//   metodoDePago!: string;
+  //Relacion: Factura pertenece a Compra. 
+  @BelongsTo(() => Compra)
+  compra!: Compra;
 
-//   // Relación una Factura pertenece aun Usuario
-//   @ForeignKey(() => Usuario)
-//   @Column({
-//     type: DataType.INTEGER,
-//     allowNull: false
-//   })
-//   usuarioId!: number;
+  //Relación una Compra pertenece a un Usuario.
+  @BelongsTo(() => Usuario)
+  usuario!: Usuario;
 
-//   @BelongsTo(() => Usuario)
-//   usuario!: Usuario;
+  //Relación uno a muchos, Factura con Detalle.
+  @HasMany(() => Detalle)
+  detalles!: Detalle[];
 
-//   //Relacion muchos a muchos compra con factura.
-//   //@BelongsToMany(() => Compra, () => FacturaVentaCompra)
-//   //compras!: Compra[];
-// }
+}
 
 
 

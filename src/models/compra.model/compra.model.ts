@@ -1,5 +1,5 @@
-import { Table, Model, Column, DataType, ForeignKey, BelongsTo } from "sequelize-typescript";
-import { Usuario } from "../usuario.model/usuario.model";
+import { Table, Model, Column, DataType, ForeignKey, BelongsTo, HasOne } from "sequelize-typescript";
+import { Factura } from "../factura.model/factura.model";
 
 @Table({
   timestamps: false,
@@ -7,13 +7,6 @@ import { Usuario } from "../usuario.model/usuario.model";
 })
 
 export class Compra extends Model {
-  @ForeignKey(() => Usuario)
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false
-  })
-  usuarioId!: number;
-
   @Column({
     type: DataType.STRING,
     allowNull: false,
@@ -22,14 +15,34 @@ export class Compra extends Model {
 
   @Column({
     type: DataType.FLOAT,
-    allowNull: false,    //usuarioId, fechaCompra, valorTotal
+    allowNull: false,
   })
   valorTotal!: number;
 
-  //Relación una Compra pertenece aun Usuario
-  @BelongsTo(() => Usuario)
-  usuario!: Usuario;
+  @Column({
+    type: DataType.ENUM("Activa", "Cancelada"),
+    allowNull: false,
+    defaultValue: "Activa",
+  })
+  estado!: string;
+
+  @Column({
+    type: DataType.ENUM("Efectivo", "Targeta"),
+    allowNull: false,
+    defaultValue: "Efectivo",
+  })
+  metodoDePago!: string;
+
+  //Relación una Compra tiene una Factura
+  @HasOne(() => Factura)
+  factura!: Factura;
 }
+
+
+
+
+
+
 
 
 

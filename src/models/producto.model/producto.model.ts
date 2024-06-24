@@ -21,21 +21,9 @@ export class Producto extends Model {
 
   @Column({
     type: DataType.FLOAT,
-    allowNull: false,
-  })
-  cantidadTotal!: number
-
-  @Column({
-    type: DataType.FLOAT,
     allowNull: false
   })
   precioUnitario!: number
-
-  @Column({
-    type: DataType.FLOAT,
-    allowNull: false
-  })
-  precioTotal!: number
 
   @Column({
     type: DataType.STRING,

@@ -10,8 +10,8 @@ interface ManejoRespuesta {
 interface ProductoReqBody {
   nombre: string;
   marca: string;
-  cantidadTotal: number;
   precioUnitario: number;
+  disponibilidad: string;
   codigo: string;
   lote: string;
 }
@@ -19,26 +19,23 @@ interface ProductoReqBody {
 export const actualizarProducto: RequestHandler = async (req, res) => {
   try {
     const id: string = req.params.id;
-    const { nombre, marca, cantidadTotal, precioUnitario, codigo, lote }: ProductoReqBody = req.body;
+
+    const { nombre, marca, precioUnitario, disponibilidad, codigo, lote }: ProductoReqBody = req.body;
 
     //Esto garantiza que si hay disponibilidad.
-    let disponible: string;
-    if (cantidadTotal > 0) {
-      disponible = "SI"
-    } else {
-      disponible = "NO"
-    }
-
-    let valorTotal: number = cantidadTotal * precioUnitario;
+    // let disponible: string;
+    // if (cantidadTotal > 0) {
+    //   disponible = "SI"
+    // } else {
+    //   disponible = "NO"
+    // }
 
     const [numeroFilasModificadas] = await Producto.update(
       {
         nombre: nombre,
         marca: marca,
-        cantidadTotal: cantidadTotal,
-        precioPorKg: precioUnitario,
-        precioTotal: valorTotal,
-        disponibilidad: disponible,
+        precioUnitario: precioUnitario,
+        disponibilidad: disponibilidad,
         codigo: codigo,
         lote: lote,
       }, {
