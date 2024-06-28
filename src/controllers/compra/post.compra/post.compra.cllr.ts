@@ -3,8 +3,9 @@ import { Compra } from "../../../models/compra.model/compra.model";
 import { Carrito } from "../../../models/carrito.model/carrito.model";
 import { Producto } from "../../../models/producto.model/producto.model";
 import { Factura } from "../../../models/factura.model/factura.model";
-import moment from "moment-timezone";
 import { Detalle } from "../../../models/detalle.model/detalle.model";
+import { Inventario } from "../../../models/inventario.model/inventario.model";
+import moment from "moment-timezone";
 
 interface ManejoRespuesta {
   message: string;
@@ -64,16 +65,38 @@ export const crearCompra: RequestHandler = async (req, res) => {
     })
 
     const detalles: Detalle[] | null = [];
-
     for (const carrito of carritos) {
-      const detalle: Detalle | null = await Detalle.create({
-        facturaId: factura.id,
-        cantidad: carrito.cantidad,
-        producto: carrito.producto.nombre,
-        precioUnitario: carrito.producto.precioUnitario,
-        valorTotal: carrito.subTotal
-      });
-      detalles.push(detalle);
+      const inventario: Inventario | null = await Inventario.findByPk(carrito.productoId);
+
+      if (inventario) {
+        inventario.cantidadVendidas = inventario.cantidadVendidas + carrito.cantidad;
+        inventario.cantidadDisponible = inventario.cantidadDisponible - carrito.cantidad;
+
+        let disponible: string = "";
+        if (inventario.cantidadDisponible > 0) {
+          disponible = "Si";
+        } else {
+          disponible = "No";
+        }
+        inventario.disponibilidad = disponible;
+        inventario.save();
+
+        const detalle: Detalle | null = await Detalle.create({
+          facturaId: factura.id,
+          inventarioId: inventario?.id,
+          cantidad: carrito.cantidad,
+          producto: carrito.producto.nombre,
+          precioUnitario: carrito.producto.precioUnitario,
+          valorTotal: carrito.subTotal
+        });
+        detalles.push(detalle);
+      } else {
+        return res
+          .status(400)
+          .json({
+            message: `El Inventario con el Id: ${carrito.productoId} no existe en la base de datos`
+          } as ManejoRespuesta);
+      }
     }
 
     await Carrito.destroy({
@@ -97,7 +120,7 @@ export const crearCompra: RequestHandler = async (req, res) => {
 
 
 
-
+//si el cliente elimina la compra se debe devolver
 
 
 

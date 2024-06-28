@@ -9,10 +9,7 @@ import { Carrito } from "../models/carrito.model/carrito.model";
 import { Detalle } from "../models/detalle.model/detalle.model";
 import { Compra } from "../models/compra.model/compra.model";
 import { Factura } from "../models/factura.model/factura.model";
-//import { Compra } from "../models/compra.model/compra.model";
-//import { CompraProducto } from "../models/compra.model/compraProducto.model";
-//import { FacturaVentaCompra } from "../models/factura.model/FacturaCompra.model";
-//import { Factura } from "../models/factura.model/factura.model";
+import { Inventario } from "../models/inventario.model/inventario.model";
 
 
 const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env;
@@ -31,6 +28,7 @@ export const connection = new Sequelize({
     Factura,
     Compra,
     Detalle,
+    Inventario
   ]
 })
 

@@ -42,17 +42,6 @@ export const crearProducto: RequestHandler = async (req, res) => {
         .json({ message: "Este producto ya existe en la base de datos" });
     }
 
-    //Esto garantiza que si haya disponibilidad.
-    // let disponible: string;
-    // if (cantidadTotal > 0) {
-    //   disponible = "SI"
-    // } else {
-    //   disponible = "NO"
-    // }
-
-    //Otra forma.
-    //const disponibilidad = cantidad > 0 ? "SI" : "NO";
-
     const fecha = moment.tz("America/Bogota").format("YYYY-MM-DD hh:mm:ss A");
 
     const productoCreado: Producto = await Producto.create({
@@ -60,9 +49,9 @@ export const crearProducto: RequestHandler = async (req, res) => {
       marca: marca,
       precioUnitario: precioUnitario,
       codigo: codigo,
-      disponibilidad: "Si",
       lote: lote,
-      fechaRegistro: fecha
+      estado: "ACTIVO",
+      fechaRegistro: fecha,
     });
     return res
       .status(200)

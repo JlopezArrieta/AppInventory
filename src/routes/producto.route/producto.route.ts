@@ -4,7 +4,7 @@ import { buscarProductos } from "../../controllers/producto/get.productos/get.pr
 import { buscarProducto } from "../../controllers/producto/getId.producto/getId.producto.cller";
 import { crearProducto } from "../../controllers/producto/post.producto/post.producto.cller";
 import { actualizarProducto } from "../../controllers/producto/put.producto/put.producto.cller";
-import { eliminarProducto } from "../../controllers/producto/delete.producto/delete.producto.cller";
+import { desactivarProducto } from "../../controllers/producto/desable.producto/desable.producto.cller";
 
 import { adminMiddlewares } from "../../middlewares/adminMiddlewares/adminMiddlewares";
 
@@ -14,13 +14,13 @@ productoRoute.get("/buscar", adminMiddlewares, buscarProductos);
 productoRoute.get("/buscar/:id", adminMiddlewares, buscarProducto);
 productoRoute.post("/crear", adminMiddlewares, crearProducto);
 productoRoute.put("/actualizar/:id", adminMiddlewares, actualizarProducto);
-productoRoute.delete("/eliminar/:id", adminMiddlewares, eliminarProducto);
+productoRoute.delete("/eliminar/:id", adminMiddlewares, desactivarProducto);
 
 // productoRoute.get("/buscar", buscarProductos);
 // productoRoute.get("/buscar/:id", buscarProducto);
 // productoRoute.post("/crear", crearProducto);
 // productoRoute.put("/actualizar/:id", actualizarProducto);
-// productoRoute.put("/eliminar/:id", eliminarProducto);
+// productoRoute.put("/eliminar/:id", desactivarProducto);
 
 
 export default productoRoute;

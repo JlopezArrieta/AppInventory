@@ -1,5 +1,7 @@
 import { Table, Model, Column, DataType, HasMany } from "sequelize-typescript";
 import { Carrito } from "../carrito.model/carrito.model";
+import { Inventario } from "../inventario.model/inventario.model";
+import { defaultValueSchemable } from "sequelize/types/utils";
 
 @Table({
   timestamps: false,
@@ -32,12 +34,6 @@ export class Producto extends Model {
   codigo!: string
 
   @Column({
-    type: DataType.ENUM("SI", "NO"),
-    allowNull: false,
-  })
-  disponibilidad!: string
-
-  @Column({
     type: DataType.STRING,
     allowNull: false,
   })
@@ -49,9 +45,20 @@ export class Producto extends Model {
   })
   fechaRegistro!: String
 
+  @Column({
+    type: DataType.ENUM("ACTIVO", "NO ACTIVO"),
+    allowNull: false,
+    defaultValue: "ACTIVO",
+  })
+  estado!: String
+
   //Relación uno a muchos, Producto con Carrito.
   @HasMany(() => Carrito)
   carritos!: Carrito[];
+
+  //Relación uno a muchos, Producto con Inventario.
+  @HasMany(() => Inventario)
+  inventario!: Inventario[];
 }
 
 

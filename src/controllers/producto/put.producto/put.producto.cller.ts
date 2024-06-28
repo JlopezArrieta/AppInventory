@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { Producto } from "../../../models/producto.model/producto.model";
+import { Op } from "sequelize";
 
 interface ManejoRespuesta {
   message: string;
@@ -11,7 +12,6 @@ interface ProductoReqBody {
   nombre: string;
   marca: string;
   precioUnitario: number;
-  disponibilidad: string;
   codigo: string;
   lote: string;
 }
@@ -20,22 +20,26 @@ export const actualizarProducto: RequestHandler = async (req, res) => {
   try {
     const id: string = req.params.id;
 
-    const { nombre, marca, precioUnitario, disponibilidad, codigo, lote }: ProductoReqBody = req.body;
+    const { nombre, marca, precioUnitario, codigo, lote }: ProductoReqBody = req.body;
 
-    //Esto garantiza que si hay disponibilidad.
-    // let disponible: string;
-    // if (cantidadTotal > 0) {
-    //   disponible = "SI"
-    // } else {
-    //   disponible = "NO"
-    // }
+    const productoDB = await Producto.findOne({
+      where: {
+        [Op.or]: [{ codigo }, { lote }],
+        id: { [Op.ne]: id }
+      }
+    });
+
+    if (productoDB) {
+      return res
+        .status(403)
+        .json({ message: `El código o lote ya existe en la base de datos con otro Id` } as ManejoRespuesta);
+    }
 
     const [numeroFilasModificadas] = await Producto.update(
       {
         nombre: nombre,
         marca: marca,
         precioUnitario: precioUnitario,
-        disponibilidad: disponibilidad,
         codigo: codigo,
         lote: lote,
       }, {
