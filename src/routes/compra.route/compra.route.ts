@@ -13,5 +13,8 @@ compraRoute.get("/buscar", adminMiddlewares, buscarCompras);
 compraRoute.post("/crear", emplMiddlewares, crearCompra);
 compraRoute.put("/desactivar/:compraId", adminMiddlewares, desactivarCompra);
 
+// compraRoute.get("/buscar", buscarCompras);
+// compraRoute.post("/crear", crearCompra);
+// compraRoute.put("/desactivar/:compraId", desactivarCompra);
 
 export default compraRoute;

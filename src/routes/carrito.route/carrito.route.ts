@@ -15,6 +15,12 @@ carritoRoute.put("/actualizar", actualizarProductoCarrito);
 carritoRoute.delete("/eliminarpro/:usuarioId/:productoId", eliminarProductoDelCarrito);//Elimina un producto del Carrito.
 carritoRoute.delete("/eliminarcar/:usuarioId", eliminarCarrito);//Elimina todos los productos del Carrito.
 
+// carritoRoute.get("/buscar/:usuarioId", buscarCarrito);//Se busca todos los productos del Carrito
+// carritoRoute.post("/agregar", agregarProductoCarrito);
+// carritoRoute.put("/actualizar", actualizarProductoCarrito);
+// carritoRoute.delete("/eliminarpro/:usuarioId/:productoId", eliminarProductoDelCarrito);//Elimina un producto del Carrito.
+// carritoRoute.delete("/eliminarcar/:usuarioId", eliminarCarrito);//Elimina todos los productos del Carrito.
+
 
 export default carritoRoute;
 

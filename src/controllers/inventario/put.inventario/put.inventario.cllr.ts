@@ -12,9 +12,10 @@ interface ManejoRespuesta {
   message: string;
   error?: any;
 }
-//productoId, referencia, nombreProducto\, cantidadTotal\, cantidadVendidas\, cantidadDisponible\, disponibilidad\, fecha\
-export const crearInventario: RequestHandler = async (req, res) => {
+
+export const actualizarInventario: RequestHandler = async (req, res) => {
   try {
+    const id: string = req.params.id;
     const { productoId, cantidadTotal }: ProductoReqBody = req.body
 
     if (!productoId || !cantidadTotal) {
@@ -23,16 +24,12 @@ export const crearInventario: RequestHandler = async (req, res) => {
         .json({ message: "Todos los campos son obligatorios" } as ManejoRespuesta);
     }
 
-    const inventario: Inventario | null = await Inventario.findOne({
-      where: {
-        productoId: productoId
-      }
-    });
+    const inventario: Inventario | null = await Inventario.findByPk(id);
 
-    if (inventario) {
+    if (!inventario) {
       return res
         .status(400)
-        .json({ message: "Este Producto ya tiene Inventario creado" } as ManejoRespuesta);
+        .json({ message: "El Inventario no existe en la base de datos" } as ManejoRespuesta);
     }
 
     const producto: Producto | null = await Producto.findByPk(productoId);
@@ -40,7 +37,7 @@ export const crearInventario: RequestHandler = async (req, res) => {
     if (producto) {
       const fechaRegistro = moment.tz("America/Bogota").format("YYYY-MM-DD hh:mm:ss A");
 
-      const inventario: Inventario = await Inventario.create({
+      await Inventario.update({
         productoId: productoId,
         nombreProducto: producto?.nombre,
         referencia: producto?.codigo,
@@ -49,21 +46,16 @@ export const crearInventario: RequestHandler = async (req, res) => {
         cantidadDisponible: cantidadTotal,
         disponibilidad: "Si",
         fecha: fechaRegistro,
-      });
-
-      if (inventario.cantidadDisponible > 0) {
-        await Producto.update({
-          estado: "ACTIVO"
-        }, {
+      },
+        {
           where: {
-            id: productoId
+            id: id
           }
-        })
-      }
-
+        });
+      const inventarioDB: Inventario | null = await Inventario.findByPk(id);
       return res
         .status(200)
-        .json({ message: "Inventario creado con exito", inventario } as ManejoRespuesta);
+        .json({ message: "Inventario actualizado con exito", inventarioDB } as ManejoRespuesta);
     } else {
       return res
         .status(400)

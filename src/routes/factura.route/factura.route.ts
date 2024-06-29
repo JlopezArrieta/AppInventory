@@ -6,6 +6,7 @@ const facturaRoute = Router();
 
 facturaRoute.get("/buscar/:id", adminMiddlewares, buscarFactura);
 
+//facturaRoute.get("/buscar/:id", buscarFactura);
 
 
 export default facturaRoute;

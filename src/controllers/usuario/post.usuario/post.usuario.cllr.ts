@@ -1,9 +1,10 @@
 import { RequestHandler } from "express";
 import { Usuario } from "../../../models/usuario.model/usuario.model";
 import { hashPassword } from "../../../helper/handle.bcrypt";
-import { Op } from "sequelize";
 import { verificarToken } from "../../../helper/jwt";
-import moment from "moment-timezone";
+import { Op } from "sequelize";
+
+import moment from "moment-timezone";//
 
 interface ManejoRespuesta {
   message: string,
@@ -40,17 +41,20 @@ export const crearUsuario: RequestHandler = async (req, res) => {
           ]
         }
       });
+
       if (usuario) {
         return res
           .status(403)
           .json({ message: "Este Usuario ya existe en la base de datos" } as ManejoRespuesta);
       }
+
     } else {
       const usuario: Usuario | null = await Usuario.findOne({
         where: {
           numDocumento: numDocumento
         },
       });
+
       if (usuario) {
         return res
           .status(403)
@@ -63,7 +67,9 @@ export const crearUsuario: RequestHandler = async (req, res) => {
       contrasenaIncriptada = await hashPassword(contrasena);
     }
 
-    let rolAsignado: string = "Cliente";
+    //NOTA: Esto se debe comentar para crear el usuario por primera vez sin tener Token.
+
+    let rolAsignado: string = "Admin";
     const token: any = req.headers.token;
 
     if (token) {
@@ -90,9 +96,11 @@ export const crearUsuario: RequestHandler = async (req, res) => {
       rol: rolAsignado,
       fechaRegistro: fechaDeCompra,
     });
+
     return res
       .status(200)
       .json({ message: `Usuario ${rolAsignado} creado con exito`, crearUsuario } as ManejoRespuesta);
+
   } catch (error) {
     return res
       .status(500)

@@ -22,6 +22,13 @@ export const actualizarProducto: RequestHandler = async (req, res) => {
 
     const { nombre, marca, precioUnitario, codigo, lote }: ProductoReqBody = req.body;
 
+    const producto: Producto | null = await Producto.findByPk(id);
+    if (!producto) {
+      return res
+        .status(400)
+        .json({ message: `El Producto con el Id: ${id} no existe en la base de datos` } as ManejoRespuesta);
+    }
+
     const productoDB = await Producto.findOne({
       where: {
         [Op.or]: [{ codigo }, { lote }],

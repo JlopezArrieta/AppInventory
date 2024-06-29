@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import { Carrito } from "../../../models/carrito.model/carrito.model";
 import { Producto } from "../../../models/producto.model/producto.model";
 import { Usuario } from "../../../models/usuario.model/usuario.model";
+import { Inventario } from "../../../models/inventario.model/inventario.model";
 
 interface CarritoReqBody {
   usuarioId: number,
@@ -40,6 +41,20 @@ export const agregarProductoCarrito: RequestHandler = async (req, res) => {
         .json({ message: "El Usuario no existe en la base de datos" } as ManejoRespuesta);
     }
 
+    //Mirar disponibilidad de productos.
+    const inventario: Inventario | null = await Inventario.findOne({
+      where: {
+        productoId: productoId
+      }
+    });
+
+    if (!inventario || inventario.cantidadDisponible < cantidad) {
+      return res
+        .status(400)
+        .json({ message: "El Producto no está disponible en la cantidad solicitada" } as ManejoRespuesta);
+    }
+
+
     let carrito: Carrito | null = await Carrito.findOne({
       where: {
         usuarioId: usuarioId,
@@ -51,6 +66,7 @@ export const agregarProductoCarrito: RequestHandler = async (req, res) => {
       carrito.cantidad = carrito.cantidad + cantidad;
       carrito.subTotal = Math.round(carrito.cantidad * producto.precioUnitario * 100) / 100;
       await carrito.save();
+
     } else {
       let total: number = Math.round(cantidad * producto?.precioUnitario * 100) / 100;
       carrito = await Carrito.create({

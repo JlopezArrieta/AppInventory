@@ -30,7 +30,7 @@ export const desactivarProducto: RequestHandler = async (req, res) => {
       if (!inventario) {
         return res
           .status(400)
-          .json({ message: `El Inventario con el Id: ${id} No existe ne la base de datos` } as ManejoRespuesta);
+          .json({ message: `El Inventario con el Id: ${id} No existe ne la base de datos, debes crear el inventario` } as ManejoRespuesta);
       } else {
         await Inventario.update({
           disponibilidad: "NO"

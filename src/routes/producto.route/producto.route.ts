@@ -14,13 +14,13 @@ productoRoute.get("/buscar", adminMiddlewares, buscarProductos);
 productoRoute.get("/buscar/:id", adminMiddlewares, buscarProducto);
 productoRoute.post("/crear", adminMiddlewares, crearProducto);
 productoRoute.put("/actualizar/:id", adminMiddlewares, actualizarProducto);
-productoRoute.delete("/eliminar/:id", adminMiddlewares, desactivarProducto);
+productoRoute.put("/desactivar/:id", adminMiddlewares, desactivarProducto);
 
 // productoRoute.get("/buscar", buscarProductos);
 // productoRoute.get("/buscar/:id", buscarProducto);
 // productoRoute.post("/crear", crearProducto);
 // productoRoute.put("/actualizar/:id", actualizarProducto);
-// productoRoute.put("/eliminar/:id", desactivarProducto);
+// productoRoute.put("/desactivar/:id", desactivarProducto);
 
 
 export default productoRoute;

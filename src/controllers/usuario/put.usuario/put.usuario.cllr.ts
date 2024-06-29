@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { Usuario } from "../../../models/usuario.model/usuario.model";
 
-interface ManejoRespuesta {
+interface ManejoRespuesta {//
   message: string,
   usuarioDB: Usuario | null,
   error: string,
@@ -38,7 +38,7 @@ export const actualizarUsuario: RequestHandler = async (req, res) => {
       const usuarioDB: Usuario | null = await Usuario.findByPk(id);
       return res
         .status(200)
-        .json({ message: "usuario Modificaco con Exito", usuarioDB } as ManejoRespuesta);
+        .json({ message: "Usuario Modificaco con Exito", usuarioDB } as ManejoRespuesta);
     }
     return res
       .status(400)

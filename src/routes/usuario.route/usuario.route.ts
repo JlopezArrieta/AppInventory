@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router } from "express";//
 
 import { buscarUsuarios } from "../../controllers/usuario/get.usuario/get.usuario.cllr";
 import { buscarUsuario } from "../../controllers/usuario/getId.usuario/getId.usuario.cllr";
@@ -19,7 +19,7 @@ usuarioRoute.delete("/eliminar/:id", adminMiddlewares, eliminarUsuario);
 
 // usuarioRoute.get("/buscar", buscarUsuarios);
 // usuarioRoute.get("/buscar/:id", buscarUsuario);
-// usuarioRoute.post("/crear", crearUsuario);
+//usuarioRoute.post("/crear", crearUsuario);
 // usuarioRoute.put("/actualizar/:id", modificarUsuario);
 // usuarioRoute.delete("/eliminar/:id", eliminarUsuario);
 

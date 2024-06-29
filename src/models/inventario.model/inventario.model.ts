@@ -67,8 +67,9 @@ export class Inventario extends Model {
   producto!: Producto;
 }
 
-//nombre, cantidadTotal, cantidadVendidas, cantidadDisponible, cantidadVendidas, disponibilidad, fecha
 
+
+//productoId, referencia, nombreProducto\, cantidadTotal\, cantidadVendidas\, cantidadDisponible\, disponibilidad\, fecha\
 
 
 

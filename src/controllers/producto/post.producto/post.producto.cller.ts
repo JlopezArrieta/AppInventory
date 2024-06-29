@@ -50,7 +50,7 @@ export const crearProducto: RequestHandler = async (req, res) => {
       precioUnitario: precioUnitario,
       codigo: codigo,
       lote: lote,
-      estado: "ACTIVO",
+      estado: "NO ACTIVO",
       fechaRegistro: fecha,
     });
     return res
