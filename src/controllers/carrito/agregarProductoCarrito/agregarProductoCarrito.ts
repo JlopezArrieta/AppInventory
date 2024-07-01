@@ -4,7 +4,7 @@ import { Producto } from "../../../models/producto.model/producto.model";
 import { Usuario } from "../../../models/usuario.model/usuario.model";
 import { Inventario } from "../../../models/inventario.model/inventario.model";
 
-interface CarritoReqBody {
+interface CarritoReqBody {//
   usuarioId: number,
   productoId: number,
   cantidad: number,
@@ -63,10 +63,15 @@ export const agregarProductoCarrito: RequestHandler = async (req, res) => {
     });
 
     if (carrito) {
-      carrito.cantidad = carrito.cantidad + cantidad;
-      carrito.subTotal = Math.round(carrito.cantidad * producto.precioUnitario * 100) / 100;
-      await carrito.save();
-
+      if ((cantidad + carrito.cantidad) <= inventario.cantidadDisponible) {
+        carrito.cantidad = carrito.cantidad + cantidad;
+        carrito.subTotal = Math.round(carrito.cantidad * producto.precioUnitario * 100) / 100;
+        await carrito.save();
+      } else {
+        return res
+          .status(400)
+          .json({ message: "La cantidad agregada al carrito superan la cantidad disponible del producto" } as ManejoRespuesta);
+      }
     } else {
       let total: number = Math.round(cantidad * producto?.precioUnitario * 100) / 100;
       carrito = await Carrito.create({

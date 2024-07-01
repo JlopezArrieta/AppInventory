@@ -3,7 +3,7 @@ import { Carrito } from "../../../models/carrito.model/carrito.model";
 import { Producto } from "../../../models/producto.model/producto.model";
 import { Usuario } from "../../../models/usuario.model/usuario.model";
 
-interface CarritoReqBody {
+interface CarritoReqBody {//
   usuarioId: number,
   productoId: number,
   cantidad: number

@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import { Carrito } from "../../../models/carrito.model/carrito.model";
 import { Producto } from "../../../models/producto.model/producto.model";
 
-interface ManejoRespuesta {
+interface ManejoRespuesta {//
   message: string;
   carritos: Carrito[];
   error?: any;

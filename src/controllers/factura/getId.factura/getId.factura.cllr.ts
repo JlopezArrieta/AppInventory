@@ -1,8 +1,7 @@
 import { RequestHandler } from "express";
-import { Compra } from "../../models/compra.model/compra.model";
-import { Factura } from "../../models/factura.model/factura.model";
-import { Detalle } from "../../models/detalle.model/detalle.model";
-
+import { Factura } from "../../../models/factura.model/factura.model";
+import { Compra } from "../../../models/compra.model/compra.model";
+import { Detalle } from "../../../models/detalle.model/detalle.model";
 
 interface ManejoRespuesta {
   message: string;

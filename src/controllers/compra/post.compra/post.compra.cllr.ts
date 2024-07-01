@@ -7,7 +7,7 @@ import { Detalle } from "../../../models/detalle.model/detalle.model";
 import { Inventario } from "../../../models/inventario.model/inventario.model";
 import moment from "moment-timezone";
 
-interface ManejoRespuesta {
+interface ManejoRespuesta {//
   message: string;
   compra: Compra | null;
   detalles: Detalle[] | null;
@@ -37,10 +37,24 @@ export const crearCompra: RequestHandler = async (req, res) => {
       include: [Producto]
     });
 
-    if (!carritos.length) {
+    if (carritos.length === 0) {
       return res
         .status(400)
         .json({ message: `Carrito vacio, verifique el Id: ${usuarioId} del usuario` } as ManejoRespuesta);
+    }
+
+    for (const carrito of carritos) {
+      let inventario: Inventario | null = await Inventario.findOne({
+        where: {
+          productoId: carrito.productoId
+        }
+      });
+
+      if (!inventario || carrito.cantidad > inventario.cantidadDisponible) {
+        return res
+          .status(400)
+          .json({ message: `El producto ${carrito.producto.nombre} no tiene esa cantidad disponible` } as ManejoRespuesta);
+      }
     }
 
     const fecha = moment.tz("America/Bogota").format("YYYY-MM-DD hh:mm:ss A");
@@ -66,7 +80,12 @@ export const crearCompra: RequestHandler = async (req, res) => {
 
     const detalles: Detalle[] | null = [];
     for (const carrito of carritos) {
-      const inventario: Inventario | null = await Inventario.findByPk(carrito.productoId);
+
+      const inventario: Inventario | null = await Inventario.findOne({
+        where: {
+          productoId: carrito.productoId
+        }
+      });
 
       if (inventario) {
         inventario.cantidadVendidas = inventario.cantidadVendidas + carrito.cantidad;

@@ -1,4 +1,4 @@
-import { Table, Model, Column, DataType, ForeignKey, BelongsTo, HasOne } from "sequelize-typescript";
+import { Table, Model, Column, DataType, HasMany } from "sequelize-typescript";
 import { Factura } from "../factura.model/factura.model";
 
 @Table({
@@ -34,7 +34,7 @@ export class Compra extends Model {
   metodoDePago!: string;
 
   //Relación una Compra tiene una Factura
-  @HasOne(() => Factura)
+  @HasMany(() => Factura)
   factura!: Factura;
 }
 

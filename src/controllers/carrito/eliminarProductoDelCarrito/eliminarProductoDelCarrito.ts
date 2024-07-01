@@ -24,7 +24,7 @@ export const eliminarProductoDelCarrito: RequestHandler = async (req, res) => {
     } else {
       return res
         .status(400)
-        .json({ message: "El Carrito no Existe en la base de datos" } as ManejoRespuesta);
+        .json({ message: "El producto no existe en el carrito" } as ManejoRespuesta);
     }
   } catch (error) {
     return res
