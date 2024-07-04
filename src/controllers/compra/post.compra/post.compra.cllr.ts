@@ -6,6 +6,7 @@ import { Factura } from "../../../models/factura.model/factura.model";
 import { Detalle } from "../../../models/detalle.model/detalle.model";
 import { Inventario } from "../../../models/inventario.model/inventario.model";
 import moment from "moment-timezone";
+import { verificarToken } from "../../../helper/jwt";
 
 interface ManejoRespuesta {//
   message: string;
@@ -71,11 +72,30 @@ export const crearCompra: RequestHandler = async (req, res) => {
       estado: "Activa"
     });
 
+    //Obtener nombre del vendedor para que aparezca en la factura y asi realizar una busqueda del vendedor.
+    let nombreCajero: string = "";
+    let vendedorId: string = "";
+    const token: any = req.headers.token;
+
+    if (token) {
+      const accesoToken = await verificarToken(token);
+      if (accesoToken.rol === "Admin" || accesoToken.rol === "Empleado") {
+        nombreCajero = accesoToken.nombresApellidos;
+        vendedorId = accesoToken.id;
+      }
+    } else {
+      return res
+        .status(400)
+        .json({ message: `No se ha proporcionado un Token` } as ManejoRespuesta);
+    }
+
     const factura: Factura | null = await Factura.create({
       usuarioId: usuarioId,
       compraId: compra.id,
       fechaEmision: fecha,
-      estado: "Activa"
+      estado: "Activa",
+      empleadoId: vendedorId,
+      nombreVendedor: nombreCajero
     })
 
     const detalles: Detalle[] | null = [];

@@ -36,6 +36,18 @@ export class Factura extends Model {
   })
   estado!: string;
 
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false
+  })
+  empleadoId!: number;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  nombreVendedor!: string;
+
   //Relacion: Factura pertenece a Compra. 
   @BelongsTo(() => Compra)
   compra!: Compra;
