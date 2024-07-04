@@ -6,6 +6,7 @@ import compraRoute from "./compra.route/compra.route";
 import accesoRoute from "./acceso.route/acceso.route";
 import inventarioRoute from "./inventario.route/inventario.route";
 import facturaRoute from "./factura.route/factura.route";
+import vendedorRoute from "./vendedor.route/vendedor.route";
 
 const routes = Router();
 
@@ -15,6 +16,7 @@ routes.use("/producto", productoRoute);
 routes.use("/carrito", carritoRoute);
 routes.use("/comprar", compraRoute);
 routes.use("/factura", facturaRoute);
+routes.use("/vendedor", vendedorRoute);
 routes.use("/autenticar", accesoRoute);
 
 export default routes;
