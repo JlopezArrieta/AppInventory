@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import { Carrito } from "../../../models/carrito.model/carrito.model";
 import { Producto } from "../../../models/producto.model/producto.model";
 
-interface ManejoRespuesta {//
+interface ManejoRespuesta {
   message: string;
   carritos: Carrito[];
   error?: any;
@@ -22,8 +22,8 @@ export const buscarCarrito: RequestHandler = async (req, res) => {
           exclude: ["id", "marca", "cantidadTotal", "precioTotal", "codigo", "disponibilidad", "lote", "fechaRegistro"]
         }
       }]
-
     });
+
     if (carritos.length !== 0) {
       return res
         .status(200)

@@ -4,7 +4,8 @@ import { hashPassword } from "../../../helper/handle.bcrypt";
 import { verificarToken } from "../../../helper/jwt";
 import { Op } from "sequelize";
 
-import moment from "moment-timezone";//
+import moment from "moment-timezone";
+import { sendEmail } from "../../../config/nodemailer.config";
 
 interface ManejoRespuesta {
   message: string,
@@ -68,7 +69,6 @@ export const crearUsuario: RequestHandler = async (req, res) => {
     }
 
     //NOTA: Esto se debe comentar para crear el usuario por primera vez sin tener Token.
-
     let rolAsignado: string = "Admin";
     const token: any = req.headers.token;
 
@@ -96,6 +96,9 @@ export const crearUsuario: RequestHandler = async (req, res) => {
       rol: rolAsignado,
       fechaRegistro: fechaDeCompra,
     });
+
+    //Enviar correo.
+    sendEmail(correo, 'Registro Exitoso', `Hola ${nombresApellidos}, tu registro fue exitoso.`);
 
     return res
       .status(200)

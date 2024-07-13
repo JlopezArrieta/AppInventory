@@ -7,6 +7,8 @@ import { Detalle } from "../../../models/detalle.model/detalle.model";
 import { Inventario } from "../../../models/inventario.model/inventario.model";
 import moment from "moment-timezone";
 import { verificarToken } from "../../../helper/jwt";
+import { Usuario } from "../../../models/usuario.model/usuario.model";
+import { sendEmail } from "../../../config/nodemailer.config";
 
 interface ManejoRespuesta {//
   message: string;
@@ -143,6 +145,20 @@ export const crearCompra: RequestHandler = async (req, res) => {
         usuarioId
       }
     });
+
+    //Generar el contenido del correo
+    let detallesTexto = '';
+    for (const detalle of detalles) {
+      detallesTexto += `Producto: ${detalle.producto}, Cantidad: ${detalle.cantidad}, Precio Unitario: ${detalle.precioUnitario}, Total: ${detalle.valorTotal}\n`;
+    }
+
+    const facturaText = `Factura ID: ${factura.id}\nNombre del Vendedor: ${nombreCajero}\nFecha de Emisión: ${fecha}\nTotal: ${precioTotal}\n\nDetalles de la compra:\n${detallesTexto}`;
+
+    //Enviar correo con la factura y detalles
+    const usuario: Usuario | null = await Usuario.findByPk(usuarioId);
+    if (usuario) {
+      sendEmail(usuario.correo, 'Compra Realizada', facturaText);
+    }
 
     return res
       .status(200)
